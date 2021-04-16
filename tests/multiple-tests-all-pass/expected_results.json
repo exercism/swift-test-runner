@@ -1,0 +1,29 @@
+{
+  "status": "pass",
+  "tests": [
+    {
+      "name": "MultipleTestsAllPassTests.testAdd",
+      "status": "pass"
+    },
+    {
+      "name": "MultipleTestsAllPassTests.testSub",
+      "status": "pass"
+    },
+    {
+      "name": "MultipleTestsAllPassTests.testMul",
+      "status": "pass"
+    },
+    {
+      "name": "SecondSuite.testAdd",
+      "status": "pass"
+    },
+    {
+      "name": "SecondSuite.testSub",
+      "status": "pass"
+    },
+    {
+      "name": "SecondSuite.testMul",
+      "status": "pass"
+    }
+  ]
+}

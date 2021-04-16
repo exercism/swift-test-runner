@@ -1,0 +1,10 @@
+{
+  "status": "fail",
+  "tests": [
+    {
+      "message": "/home/wdn/dev/exercism/swift-test-runner/test/single-test-that-fails/Tests/SingleTestThatFailsTests/SingleTestThatFailsTests.swift:7: error: SingleTestThatFailsTests.testAdd : XCTAssertEqual failed: (\"-1\") is not equal to (\"5\") - 2+3 should equal 5",
+      "name": "SingleTestThatFailsTests.testAdd",
+      "status": "fail"
+    }
+  ]
+}

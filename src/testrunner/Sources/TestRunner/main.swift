@@ -18,7 +18,7 @@ struct RunnerOptions: ParsableArguments {
   var buildDirectory: String
 
   @Flag()
-  var showSkipped: Bool
+  var showSkipped: Bool = true
 }
 
 // macOS test options
@@ -67,11 +67,11 @@ let process = Process()
 #if os(macOS)
   var testFileRoot = options.solutionDirectory
   process.launchPath = options.swiftLocation
-  process.currentDirectoryPath = testFileRoot// + options.slug
+  process.currentDirectoryPath = testFileRoot
 #else
   var testFileRoot = URL(fileURLWithPath: options.solutionDirectory)
   process.executableURL = URL(fileURLWithPath: options.swiftLocation)
-  process.currentDirectoryURL = testFileRoot//.appendingPathComponent(options.slug)
+  process.currentDirectoryURL = testFileRoot
 #endif
 
 process.arguments = ["test", "--build-path", tempDir.path]

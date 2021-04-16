@@ -1,6 +1,8 @@
-test/output/
 .DS_Store
 **/.build
 **/Packages
 **/Package.resolved
 **/*.xcodeproj
+
+tests/*/results.json
+tests/*/.swiftpm/

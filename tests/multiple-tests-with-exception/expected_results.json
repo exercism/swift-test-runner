@@ -1,0 +1,22 @@
+{
+  "status": "fail",
+  "tests": [
+    {
+      "name": "MultipleTestsWithExceptionTests.testAdd",
+      "status": "pass"
+    },
+    {
+      "name": "MultipleTestsWithExceptionTests.testSub",
+      "status": "pass"
+    },
+    {
+      "name": "MultipleTestsWithExceptionTests.testMul",
+      "status": "pass"
+    },
+    {
+      "message": "/home/wdn/dev/exercism/swift-test-runner/test/multiple-tests-with-exception/Tests/MultipleTestsWithExceptionTests/MultipleTestsWithExceptionTests.swift:19: error: MultipleTestsWithExceptionTests.testThrow : XCTAssertEqual threw error \"testError(\"Oh noes! Div by zeroes!!!\")\" - ",
+      "name": "MultipleTestsWithExceptionTests.testThrow",
+      "status": "fail"
+    }
+  ]
+}

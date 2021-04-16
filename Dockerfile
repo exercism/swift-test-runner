@@ -1,18 +1,13 @@
-FROM swift:latest AS builder
-# WORKDIR /opt/testrunner
+FROM swift:5.3.3-bionic AS builder
+
 COPY src/testrunner ./
 
-# Print Installed Swift Version
 RUN swift --version
-#RUN swift package clean
 RUN swift build --configuration release
 
-FROM swift:latest
+FROM swift:5.3.3-bionic
 WORKDIR /opt/test-runner/
 COPY bin/ bin/
 COPY --from=builder /.build/release/TestRunner bin/
 
-ENV NAME RUNALL
-
-ENTRYPOINT ["./bin/run.sh"]
-# ENTRYPOINT ["bin/TestRunner", "--help"]
+ENTRYPOINT ["/opt/test-runner/bin/run.sh"]
