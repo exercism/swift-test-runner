@@ -18,7 +18,7 @@ BASEDIR=$(dirname "$0")
 # echo "$2"
 # echo "$3"
 # echo "-------------"
-RUNALL=true "${BASEDIR}"/TestRunner --slug "${SLUG}" --solution-directory "${INPUT_DIR}/${SLUG}" --output-directory "${OUTPUT_DIR}" --swift-location $(which swift) --build-directory "/tmp/"
+RUNALL=true "${BASEDIR}"/TestRunner --slug "${SLUG}" --solution-directory "${INPUT_DIR}" --output-directory "${OUTPUT_DIR}" --swift-location $(which swift) --build-directory "/tmp"
 
 #echo "$SLUG: processing test output in $INPUT_DIR..."
 ## PLACEHOLDER - OPTIONAL: Your language may support outputting results
