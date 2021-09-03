@@ -121,6 +121,13 @@ do {
   try jData.write(to: outputFile)
 
   if let jStr = String(data: jData, encoding: .utf8) { print(jStr) }
+    let outputFile = URL(fileURLWithPath: options.outputDirectory, isDirectory: true)
+        .appendingPathComponent("results.json", isDirectory: false)
+
+    if FileManager.default.fileExists(atPath: outputFile.absoluteString) == false {
+        try FileManager.default.createDirectory(at: URL(fileURLWithPath: options.outputDirectory, isDirectory: true), withIntermediateDirectories: true, attributes: [:])
+    }
+    try jData.write(to: outputFile)
 } catch {
   print(error)
   exit(1)
