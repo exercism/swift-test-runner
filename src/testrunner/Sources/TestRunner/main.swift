@@ -17,8 +17,8 @@ struct RunnerOptions: ParsableArguments {
   @Option()
   var buildDirectory: String
 
-  @Flag()
-  var showSkipped: Bool
+    @Flag()
+    var showSkipped: Bool = false
 }
 
 // macOS test options
