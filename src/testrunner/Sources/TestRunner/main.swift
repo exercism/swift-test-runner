@@ -17,8 +17,8 @@ struct RunnerOptions: ParsableArguments {
   @Option()
   var buildDirectory: String
 
-    @Flag()
-    var showSkipped: Bool = false
+  @Flag()
+  var showSkipped: Bool = false
 }
 
 // macOS test options
@@ -116,18 +116,15 @@ do {
   #endif
   let jData = try jenc.encode(options.showSkipped ? testResult : testResult.dropSkips)
 
-  let outputFile = URL(fileURLWithPath: options.outputDirectory, isDirectory: true)
-    .appendingPathComponent("results.json", isDirectory: false)
-  try jData.write(to: outputFile)
-
   if let jStr = String(data: jData, encoding: .utf8) { print(jStr) }
-    let outputFile = URL(fileURLWithPath: options.outputDirectory, isDirectory: true)
+
+  let outputFile = URL(fileURLWithPath: options.outputDirectory, isDirectory: true)
         .appendingPathComponent("results.json", isDirectory: false)
 
-    if FileManager.default.fileExists(atPath: outputFile.absoluteString) == false {
-        try FileManager.default.createDirectory(at: URL(fileURLWithPath: options.outputDirectory, isDirectory: true), withIntermediateDirectories: true, attributes: [:])
-    }
-    try jData.write(to: outputFile)
+  if FileManager.default.fileExists(atPath: outputFile.absoluteString) == false {
+    try FileManager.default.createDirectory(at: URL(fileURLWithPath: options.outputDirectory, isDirectory: true), withIntermediateDirectories: true, attributes: [:])
+  }
+  try jData.write(to: outputFile)
 } catch {
   print(error)
   exit(1)
