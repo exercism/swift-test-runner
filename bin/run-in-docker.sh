@@ -62,6 +62,7 @@ docker build --rm --no-cache -t exercism/swift-test-runner .
 mkdir -p "$OUTPUT_DIR"
 
 # run image passing the arguments
+# TODO: support --read-only flag
 docker run \
     --network none \
     --mount type=bind,src="${INPUT_DIR}",dst=/solution \

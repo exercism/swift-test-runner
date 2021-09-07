@@ -16,6 +16,7 @@
 docker build --rm -t exercism/swift-test-runner .
 
 # Run the Docker image using the settings mimicking the production environment
+# TODO: support --read-only flag
 docker run \
     --network none \
     --mount type=bind,src="${PWD}/tests",dst=/opt/test-runner/tests \
