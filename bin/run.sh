@@ -67,10 +67,3 @@ RUNALL=true "${BASEDIR}"/TestRunner --slug "${SLUG}" --solution-directory "${INP
 ## PLACEHOLDER - OPTIONAL: Your language may support placing results
 ##   directly in $OUTPUT_DIR
 #cp "${INPUT_DIR}/results.json" "$OUTPUT_DIR"
-
-echo "$SLUG: comparing ${OUTPUT_DIR}/results"
-diff "${INPUT_DIR}/${SLUG}/results.json" "${OUTPUT_DIR}/results.json"
-
-echo "$SLUG: OK\n-------------\n"
-
-
