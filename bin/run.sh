@@ -1,57 +1,29 @@
-#!/bin/bash
-set -e
+#!/usr/bin/env bash
 
-GREEN="\033[0;32m"
-ORANGE="\033[0;33m"
-NC="\033[0m"
+# Synopsis:
+# Run the test runner on a solution.
 
-printHelpAndExit() {
-    echo -e "Usage: run.sh ${GREEN}-s${NC} exercise-slug ${GREEN}-i${NC} /solution ${GREEN}-o${NC} /output"
-    echo
-    echo -e "${ORANGE}PARAMETERS${NC}"
-    echo -e "${GREEN}   -s, --slug${NC}		Name of exercise slug"
-    echo -e "${GREEN}   -i, --input${NC}		Absolute path to solution folder"
-    echo -e "${GREEN}   -o, --output${NC}		Absolute path to output directory (For result.json report)"
-    echo
+# Arguments:
+# $1: exercise slug
+# $2: absolute path to solution folder
+# $3: absolute path to output directory
+
+# Output:
+# Writes the test results to a results.json file in the passed-in output directory.
+# The test results are formatted according to the specifications at https://github.com/exercism/docs/blob/main/building/tooling/test-runners/interface.md
+
+# Example:
+# ./bin/run.sh two-fer /absolute/path/to/two-fer/solution/folder/ /absolute/path/to/output/directory/
+
+# If any required arguments is missing, print the usage and exit
+if [ -z "$1" ] || [ -z "$2" ] || [ -z "$3" ]; then
+    echo "usage: ./bin/run.sh exercise-slug /absolute/path/to/two-fer/solution/folder/ /absolute/path/to/output/directory/"
     exit 1
-}
-
-if [ $# -eq 0 ]; then
-    printHelpAndExit
 fi
 
+SLUG="$1"
+INPUT_DIR="${2%/}"
+OUTPUT_DIR="${3%/}"
 BASEDIR=$(dirname "$0")
-
-#Parse keys
-while(( "$#" )); do
-    case "$1" in
-        -s|--slug)
-            SLUG="$2"
-            shift
-            shift
-            ;;
-        -i|--input)
-            INPUT_DIR="$2"
-            shift
-            shift
-            ;;
-        -o|--output)
-            OUTPUT_DIR="$2"
-            shift
-            shift
-            ;;
-        *) # preserve positional arguments
-            PARAMS="$PARAMS $1"
-            shift
-            ;;
-    esac
-done
-
-# Print settings
-# echo -e "${ORANGE}OPTIONS${NC}"
-# echo -e "${GREEN}SLUG${NC}    = ${SLUG}"
-# echo -e "${GREEN}INPUT${NC}   = ${INPUT_DIR}"
-# echo -e "${GREEN}OUTPUT${NC}  = ${OUTPUT_DIR}"
-# echo "-------------"
 
 RUNALL=true "${BASEDIR}"/TestRunner --slug "${SLUG}" --solution-directory "${INPUT_DIR}" --output-directory "${OUTPUT_DIR}" --swift-location $(which swift) --build-directory "/tmp"

@@ -20,7 +20,7 @@ for test_dir in tests/*; do
     results_file_path="${test_dir_path}/results.json"
     expected_results_file_path="${test_dir_path}/expected_results.json"
 
-    bin/run.sh --slug "${test_dir_name}" --input "${test_dir_path}" --output "${test_dir_path}"
+    bin/run.sh "${test_dir_name}" "${test_dir_path}" "${test_dir_path}"
 
     # Normalize the results file
     sed -i -e "s~\\\/~/~g" -e "s~${test_dir_path}~/solution~g" "${results_file_path}"
