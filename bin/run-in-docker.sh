@@ -56,7 +56,7 @@ while(( "$#" )); do
 done
 
 # build docker image
-docker build --rm --no-cache -t exercism/swift-test-runner .
+docker build --rm -t exercism/swift-test-runner .
 
 # Create output directory if it doesn't exist
 mkdir -p "$OUTPUT_DIR"
