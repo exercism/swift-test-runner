@@ -2,7 +2,7 @@
   "status" : "fail",
   "tests" : [
     {
-      "message" : "\/opt\/test-runner\/tests\/multiple-tests-single-fail\/Tests\/MultipleSingleFailTests\/MultipleSingleFailTests.swift:9: error: MultipleSingleFailTests.testAdd : XCTAssertEqual failed: (\"0\") is not equal to (\"5\") - 2+3 should equal 5",
+      "message" : "/solution/Tests/MultipleSingleFailTests/MultipleSingleFailTests.swift:9: error: MultipleSingleFailTests.testAdd : XCTAssertEqual failed: (\"0\") is not equal to (\"5\") - 2+3 should equal 5",
       "name" : "MultipleSingleFailTests.testAdd",
       "output" : "yabba…",
       "status" : "fail"
@@ -18,7 +18,7 @@
       "status" : "pass"
     },
     {
-      "message" : "\/opt\/test-runner\/tests\/multiple-tests-single-fail\/Tests\/MultipleSingleFailTests\/MultipleSingleFailTests.swift:34: error: SecondSuite.testAdd : XCTAssertEqual failed: (\"0\") is not equal to (\"25\") - 12+13 should equal 25",
+      "message" : "/solution/Tests/MultipleSingleFailTests/MultipleSingleFailTests.swift:34: error: SecondSuite.testAdd : XCTAssertEqual failed: (\"0\") is not equal to (\"25\") - 12+13 should equal 25",
       "name" : "SecondSuite.testAdd",
       "output" : "yabba…",
       "status" : "fail"

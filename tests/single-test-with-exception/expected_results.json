@@ -2,7 +2,7 @@
   "status" : "fail",
   "tests" : [
     {
-      "message" : "\/opt\/test-runner\/tests\/single-test-with-exception\/Tests\/SingleWithExceptionTests\/SingleWithExceptionTests.swift:7: error: SingleWithExceptionTests.testAdd : XCTAssertEqual threw error \"testError(\"Kaboomtown!\")\" - 2+3 should equal 5",
+      "message" : "/solution/Tests/SingleWithExceptionTests/SingleWithExceptionTests.swift:7: error: SingleWithExceptionTests.testAdd : XCTAssertEqual threw error \"testError(\"Kaboomtown!\")\" - 2+3 should equal 5",
       "name" : "SingleWithExceptionTests.testAdd",
       "status" : "fail"
     }
