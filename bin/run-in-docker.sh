@@ -64,7 +64,6 @@ mkdir -p "$OUTPUT_DIR"
 # run image passing the arguments
 docker run \
     --network none \
-    --read-only \
     --mount type=bind,src="${INPUT_DIR}",dst=/solution \
     --mount type=bind,src="${OUTPUT_DIR}",dst=/output \
     --mount type=volume,dst=/tmp \
