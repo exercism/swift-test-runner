@@ -7,7 +7,7 @@ NC="\033[0m"
 
 printHelpAndExit() {
     echo -e "${ORANGE}USAGE${NC}"
-    echo -e "   ./run-in-docker.sh ${GREEN}-s${NC} two-fer ${GREEN}-i${NC} ./relative/path/to/two-fer/solution/folder/ ${GREEN}-o${NC} ./relative/path/to/output/directory/"
+    echo -e "   ./run-in-docker.sh ${GREEN}-s${NC} two-fer ${GREEN}-i${NC} /absolute/path/to/solution/folder/ ${GREEN}-o${NC} ./absolute/path/to/output/directory/"
     echo
     echo -e "${ORANGE}SYNOPSIS${NC}"
     echo "   Test runner for run.sh in a docker container;"
@@ -17,8 +17,8 @@ printHelpAndExit() {
     echo
     echo -e "${ORANGE}ARGUMENTS${NC}"
     echo -e "${GREEN}   -s, --slug${NC}		Name of exercise slug"
-    echo -e "${GREEN}   -i, --input${NC}		Relative path to solution folder (with trailing slash)"
-    echo -e "${GREEN}   -o, --output${NC}		Relative path to output directory (with trailing slash)"
+    echo -e "${GREEN}   -i, --input${NC}		Absolute path to solution folder (with trailing slash)"
+    echo -e "${GREEN}   -o, --output${NC}		Absolute path to output directory (with trailing slash)"
     echo
     echo -e "${ORANGE}OUTPUT${NC}"
     echo "   Writes the test results to a results.json file in the passed-in output directory."
@@ -56,13 +56,13 @@ while(( "$#" )); do
 done
 
 # build docker image
-docker build --rm --no-cache -t swift-test-runner .
+docker build --rm --no-cache -t exercism/swift-test-runner .
 
 # Create output directory if it doesn't exist
 mkdir -p "$OUTPUT_DIR"
 
 # run image passing the arguments
 docker run \
-    --mount type=bind,src=$PWD/$INPUT_DIR,dst=/solution \
-    --mount type=bind,src=$PWD/$OUTPUT_DIR,dst=/output \
-    swift-test-runner $SLUG /solution/ /output/
+    --mount type=bind,src=${INPUT_DIR},dst=/solution \
+    --mount type=bind,src=${OUTPUT_DIR},dst=/output \
+    exercism/swift-test-runner $SLUG /solution/ /output/

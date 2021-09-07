@@ -6,12 +6,12 @@ ORANGE="\033[0;33m"
 NC="\033[0m"
 
 printHelpAndExit() {
-    echo -e "Usage: run.sh ${GREEN}-s${NC} exercise-slug ${GREEN}-i${NC} ./solution ${GREEN}-o${NC} ./output"
+    echo -e "Usage: run.sh ${GREEN}-s${NC} exercise-slug ${GREEN}-i${NC} /solution ${GREEN}-o${NC} /output"
     echo
     echo -e "${ORANGE}PARAMETERS${NC}"
     echo -e "${GREEN}   -s, --slug${NC}		Name of exercise slug"
-    echo -e "${GREEN}   -i, --input${NC}		Relative path to solution folder"
-    echo -e "${GREEN}   -o, --output${NC}		Relative path to output directory (For result.json report)"
+    echo -e "${GREEN}   -i, --input${NC}		Absolute path to solution folder"
+    echo -e "${GREEN}   -o, --output${NC}		Absolute path to output directory (For result.json report)"
     echo
     exit 1
 }
