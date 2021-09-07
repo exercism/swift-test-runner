@@ -4,3 +4,4 @@ tests/*/results.json
 **/Packages
 **/Package.resolved
 **/*.xcodeproj
+bin/TestRunner
