@@ -1,4 +1,4 @@
-test/output/
+tests/*/results.json
 .DS_Store
 **/.build
 **/Packages

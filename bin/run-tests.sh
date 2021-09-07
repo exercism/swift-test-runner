@@ -22,6 +22,9 @@ for test_dir in tests/*; do
 
     bin/run.sh --slug "${test_dir_name}" --input "${test_dir_path}" --output "${test_dir_path}"
 
+    # Normalize the results file
+    sed -i "s~${test_dir_path}~/solution~g" "${results_file_path}"
+
     echo "${test_dir_name}: comparing results.json to expected_results.json"
     diff "${results_file_path}" "${expected_results_file_path}"
 
