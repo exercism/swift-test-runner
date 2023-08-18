@@ -1,3 +1,8 @@
+# 1.1.3
+
+- Fixed an issue making so outputs on multiple lines missed the last line
+- Formatted all files using the formatter
+
 # 1.1.2
 
 - Updated test files to follow a more modern design.
