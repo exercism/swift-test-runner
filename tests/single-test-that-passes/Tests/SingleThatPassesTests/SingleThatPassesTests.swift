@@ -1,9 +1,8 @@
-import XCTest
+import Testing
 
 @testable import SingleThatPasses
 
-final class SingleThatPassesTests: XCTestCase {
-  func testAdd() {
-    XCTAssertEqual(sum(2, 3), 5, "2+3 should equal 5")
-  }
+@Test("test Add")
+func testAdd() {
+  #expect(sum(2, 3) == 5, "2+3 should equal 5")
 }

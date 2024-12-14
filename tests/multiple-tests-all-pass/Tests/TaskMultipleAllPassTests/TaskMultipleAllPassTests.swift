@@ -1,31 +1,34 @@
-import XCTest
+import Testing
 
 @testable import MultipleAllPass
 
-final class TaskMultipleAllPassTests: XCTestCase {
-  func testAdd() {
-    XCTAssertEqual(sum(2, 3), 5, "2+3 should equal 5")
-  }
 
-  func testSub() {
-    XCTAssertEqual(sub(2, 3), -1)
-  }
-
-  func testMul() {
-    XCTAssertEqual(mul(2, 3), 6)
-  }
+@Test("test Add")
+func testAdd() {
+   #expect(sum(2, 3) == 5, "2+3 should equal 5")
 }
 
-final class TaskSecondSuite: XCTestCase {
-  func testAdd_2() {
-    XCTAssertEqual(sum(12, 13), 25, "2+3 should equal 5")
-  }
+@Test("test Sub")
+func testSub() {
+   #expect(sub(2, 3) == -1)
+}
 
-  func testSub_2() {
-    XCTAssertEqual(sub(12, 13), -1)
-  }
+@Test("test Mul")
+func testMul() {
+   #expect(mul(2, 3) == 6)
+}
 
-  func testMul_2() {
-    XCTAssertEqual(mul(12, 13), 156)
-  }
+@Test("test Add 2")
+func testAdd_2() {
+   #expect(sum(12, 13) == 25, "2+3 should equal 5")
+}
+
+@Test("test Sub 2")
+func testSub_2() {
+   #expect(sub(12, 13) == -1)
+}
+
+@Test("test Mul 2")
+func testMul_2() {
+   #expect(mul(12, 13) == 156)
 }
