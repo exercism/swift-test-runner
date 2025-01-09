@@ -2,40 +2,34 @@
   "status" : "pass",
   "tests" : [
     {
-      "name" : "testAdd",
+      "name" : "test Add",
       "status" : "pass",
-      "task_id" : 1,
-      "test_code" : "XCTAssertEqual(sum(2, 3), 5, \"2+3 should equal 5\")"
+      "test_code" : "#expect(sum(2, 3) == 5, \"2+3 should equal 5\")"
     },
     {
-      "name" : "testSub",
+      "name" : "test Sub",
       "status" : "pass",
-      "task_id" : 1,
-      "test_code" : "XCTAssertEqual(sub(2, 3), -1)"
+      "test_code" : "#expect(sub(2, 3) == -1)"
     },
     {
-      "name" : "testMul",
+      "name" : "test Mul",
       "status" : "pass",
-      "task_id" : 1,
-      "test_code" : "XCTAssertEqual(mul(2, 3), 6)"
+      "test_code" : "#expect(mul(2, 3) == 6)"
     },
     {
-      "name" : "testAdd_2",
+      "name" : "test Add 2",
       "status" : "pass",
-      "task_id" : 2,
-      "test_code" : "XCTAssertEqual(sum(12, 13), 25, \"2+3 should equal 5\")"
+      "test_code" : "#expect(sum(12, 13) == 25, \"2+3 should equal 5\")"
     },
     {
-      "name" : "testSub_2",
+      "name" : "test Sub 2",
       "status" : "pass",
-      "task_id" : 2,
-      "test_code" : "XCTAssertEqual(sub(12, 13), -1)"
+      "test_code" : "#expect(sub(12, 13) == -1)"
     },
     {
-      "name" : "testMul_2",
+      "name" : "test Mul 2",
       "status" : "pass",
-      "task_id" : 2,
-      "test_code" : "XCTAssertEqual(mul(12, 13), 156)"
+      "test_code" : "#expect(mul(12, 13) == 156)"
     }
   ],
   "version" : 3

@@ -2,24 +2,21 @@
   "status" : "fail",
   "tests" : [
     {
-      "message" : "testAdd : XCTAssertEqual failed: (\"-1\") is not equal to (\"5\") - 2+3 should equal 5",
-      "name" : "testAdd",
+      "message" : "Expectation failed: (sum(2, 3) → -1) == 5: 2+3 should equal 5",
+      "name" : "test Add",
       "status" : "fail",
-      "task_id" : 1,
-      "test_code" : "XCTAssertEqual(sum(2, 3), 5, \"2+3 should equal 5\")"
+      "test_code" : "#expect(sum(2, 3) == 5, \"2+3 should equal 5\")"
     },
     {
-      "message" : "testSub : XCTAssertEqual failed: (\"5\") is not equal to (\"-1\") -",
-      "name" : "testSub",
+      "message" : "Expectation failed: (sub(2, 3) → 5) == -1",
+      "name" : "test Sub",
       "status" : "fail",
-      "task_id" : 1,
-      "test_code" : "XCTAssertEqual(sub(2, 3), -1)"
+      "test_code" : "#expect(sub(2, 3) == -1)"
     },
     {
-      "name" : "testMul",
+      "name" : "test Mul",
       "status" : "pass",
-      "task_id" : 1,
-      "test_code" : "XCTAssertEqual(mul(2, 3), 6)"
+      "test_code" : "#expect(mul(2, 3) == 6)"
     }
   ],
   "version" : 3

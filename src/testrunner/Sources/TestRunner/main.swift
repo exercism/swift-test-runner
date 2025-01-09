@@ -1,7 +1,7 @@
 import Foundation
+import FoundationXML
 import SwiftParser
 import SwiftSyntax
-import FoundationXML
 
 struct testFile: Codable {
   var version: Int = 3
@@ -29,6 +29,15 @@ struct TestCases: Codable {
   func getFunctionName() -> String {
     return self.functionName ?? ""
   }
+
+  private enum CodingKeys: String, CodingKey {
+    case name
+    case test_code
+    case status
+    case message
+    case output
+    case task_id
+  }
 }
 
 class TestRunner {
@@ -51,16 +60,23 @@ class TestRunner {
       let errorContext = loadErrorContext()
       print(errorContext)
       writeJson(resultPath: CommandLine.arguments[4], xmlTests: [], error: errorContext)
-      return 
+      return
     }
+
     let xmlData = Data(xmlSource.utf8)
     let xmlParser = XMLParser(data: xmlData)
     let delegate = MyXMLParserDelegate(tests: testCases)
     xmlParser.delegate = delegate
     xmlParser.parse()
+    if !delegate.hasTest {
+      let errorContext = loadErrorContext()
+      print(errorContext)
+      writeJson(resultPath: CommandLine.arguments[4], xmlTests: [], error: errorContext)
+      return
+    }
     let xmlTests = delegate.tests
 
-    writeJson(resultPath: CommandLine.arguments[4], xmlTests: xmlTests )
+    writeJson(resultPath: CommandLine.arguments[4], xmlTests: xmlTests)
   }
 
   static func loadErrorContext() -> String {
@@ -70,7 +86,7 @@ class TestRunner {
     return swiftSource
   }
 
-  static func writeJson(resultPath: String, xmlTests : [TestCases], error: String = "") {
+  static func writeJson(resultPath: String, xmlTests: [TestCases], error: String = "") {
     let encoder = JSONEncoder()
     encoder.outputFormatting.update(with: .prettyPrinted)
     encoder.outputFormatting.update(with: .sortedKeys)
