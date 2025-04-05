@@ -30,6 +30,9 @@ spec_file="${INPUT_DIR}/$(jq -r '.files.test[0]' ${INPUT_DIR}/.meta/config.json)
 results_file="${OUTPUT_DIR}/results.json"
 BASEDIR=$(dirname "$0")
 
+mkdir "${INPUT_DIR}/.build/repositories/"
+cp .build/repositories/* "${INPUT_DIR}/.build/repositories/" -r
+
 touch "${results_file}"
 
 swift test --package-path "${INPUT_DIR}" --xunit-output "${INPUT_DIR}/results.xml" &> "${capture_file}"

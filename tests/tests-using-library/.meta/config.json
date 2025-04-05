@@ -1,0 +1,10 @@
+{
+  "files": {
+    "solution": [
+      "Sources/UsingLibrary/UsingLibrary.swift"
+    ],
+    "test": [
+      "Tests/UsingLibraryTests/UsingLibraryTests.swift"
+    ]
+  }
+}
