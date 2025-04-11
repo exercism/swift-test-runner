@@ -35,7 +35,7 @@ cp .build/repositories/* "${INPUT_DIR}/.build/repositories/" -r
 
 touch "${results_file}"
 
-swift test --package-path "${INPUT_DIR}" --xunit-output "${INPUT_DIR}/results.xml" &> "${capture_file}"
+swift test --package-path "${INPUT_DIR}" --xunit-output "${INPUT_DIR}/results.xml"  --skip-update  &> "${capture_file}"
 
 
 ./bin/TestRunner "${spec_file}" "${junit_file}" "${capture_file}" "${results_file}" "${SLUG}"
