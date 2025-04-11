@@ -17,7 +17,6 @@ COPY Package.swift ./Package.swift
 
 RUN swift build
 
-COPY  .build/repositories/ .build/repositories/
 COPY --from=builder /.build/release/TestRunner bin/
 
 ENV NAME RUNALL
