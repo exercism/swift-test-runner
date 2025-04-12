@@ -83,7 +83,14 @@ class TestRunner {
     let file = CommandLine.arguments[3]
     let url = URL(fileURLWithPath: file)
     let swiftSource = try! String(contentsOf: url)
-    return swiftSource
+    let linesofText = swiftSource.components(separatedBy: "\n")
+    var result = ""
+    for index in stride(from: linesofText.count - 1, to: 0, by: -1) {
+      guard let safeCharacter = linesofText[index].first else { continue }
+      guard safeCharacter != "[" else { break }
+      result = linesofText[index] + result
+    }
+    return result
   }
 
   static func writeJson(resultPath: String, xmlTests: [TestCases], error: String = "") {
