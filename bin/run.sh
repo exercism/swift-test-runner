@@ -30,8 +30,8 @@ spec_file="${INPUT_DIR}/$(jq -r '.files.test[0]' ${INPUT_DIR}/.meta/config.json)
 results_file="${OUTPUT_DIR}/results.json"
 BASEDIR=$(dirname "$0")
 
-mkdir "${INPUT_DIR}/.build/" -p
-cp .build/* "${INPUT_DIR}/.build/" -r
+mkdir "${INPUT_DIR}" -p
+cp -r .build "${INPUT_DIR}/"
 cp Package.resolved "${INPUT_DIR}/Package.resolved"
 
 touch "${results_file}"
