@@ -24,16 +24,19 @@ fi
 SLUG="$1"
 INPUT_DIR="${2%/}"
 OUTPUT_DIR="${3%/}"
-junit_file="${INPUT_DIR}/results.xml"
+junit_file="${INPUT_DIR}/results-swift-testing.xml"
 capture_file="${OUTPUT_DIR}/capture"
 spec_file="${INPUT_DIR}/$(jq -r '.files.test[0]' ${INPUT_DIR}/.meta/config.json)"
 results_file="${OUTPUT_DIR}/results.json"
 BASEDIR=$(dirname "$0")
 
+mkdir "${INPUT_DIR}/.build/repositories/" -p
+cp .build/repositories/* "${INPUT_DIR}/.build/repositories/" -r
+cp Package.resolved "${INPUT_DIR}/Package.resolved"
+
 touch "${results_file}"
 
-export RUNALL=true
-swift test --package-path "${INPUT_DIR}" -v --parallel --num-workers 1 --xunit-output "${junit_file}" &> "${capture_file}"
+swift test --package-path "${INPUT_DIR}" --xunit-output "${INPUT_DIR}/results.xml" --skip-update  &> "${capture_file}"
 
 
 ./bin/TestRunner "${spec_file}" "${junit_file}" "${capture_file}" "${results_file}" "${SLUG}"

@@ -2,10 +2,10 @@
   "status" : "fail",
   "tests" : [
     {
-      "message" : "testAdd : XCTAssertEqual failed: (\"-1\") is not equal to (\"5\") - 2+3 should equal 5",
-      "name" : "testAdd",
+      "message" : "Expectation failed: (sum(2, 3) → -1) == 5: 2+3 should equal 5",
+      "name" : "test Add",
       "status" : "fail",
-      "test_code" : "XCTAssertEqual(sum(2, 3), 5, \"2+3 should equal 5\")"
+      "test_code" : "#expect(sum(2, 3) == 5, \"2+3 should equal 5\")"
     }
   ],
   "version" : 3

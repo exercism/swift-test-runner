@@ -1,3 +1,12 @@
+# 2.0.0
+
+- Updated to Swift 6.1
+- Update swift-syntax to 600.0.0
+- Use swift-testing instead of XCTest
+- Brand new way of handling gathering test results, which is more robust and easier to maintain
+- Depricated task_id, user output
+- Uses version 2 instead of 3
+
 # 1.1.3
 
 - Fixed an issue making so outputs on multiple lines missed the last line
