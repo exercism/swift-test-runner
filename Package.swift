@@ -6,7 +6,7 @@ let package = Package(
     name: "TestRunner",
     products: [
     ],
-    dependencies: [.package(url: "https://github.com/apple/swift-numerics", from: "1.0.2")],
+    dependencies: [.package(url: "https://github.com/apple/swift-numerics", from: "1.0.3")],
     targets: [
     ]
 )

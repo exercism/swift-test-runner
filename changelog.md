@@ -1,3 +1,8 @@
+# 2.0.1
+
+- Update to Swift 6.1.2
+- Preformance improvements when using swift-numerics
+
 # 2.0.0
 
 - Updated to Swift 6.1
