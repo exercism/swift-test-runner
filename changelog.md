@@ -1,3 +1,7 @@
+# 2.0.2
+
+- Fix only one test case being executed.
+
 # 2.0.1
 
 - Update to Swift 6.1.2
