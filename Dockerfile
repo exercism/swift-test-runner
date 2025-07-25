@@ -9,7 +9,6 @@ RUN swift build --configuration release
 
 # Build WarmUp package
 # Build directory and final working paths should be equal for reuse of ModuleCache.
-# /solution is mounting point where exercise package is added.
 WORKDIR /opt/test-runner
 COPY src/WarmUp .
 RUN swift build --build-tests

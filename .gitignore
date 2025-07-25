@@ -1,6 +1,5 @@
 tests/*/results.json
 .DS_Store
-**/.modulecache
 **/.build
 **/Packages
 **/Package.resolved

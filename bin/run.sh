@@ -25,12 +25,13 @@ SLUG="$1"
 WORKING_DIR=${PWD}
 INPUT_DIR="${2%/}"
 OUTPUT_DIR="${3%/}"
+
+cp -r ${INPUT_DIR}/. ${WORKING_DIR}
+
 junit_file="${WORKING_DIR}/results-swift-testing.xml"
 spec_file="${WORKING_DIR}/$(jq -r '.files.test[0]' ${WORKING_DIR}/.meta/config.json)"
 capture_file="${OUTPUT_DIR}/capture"
 results_file="${OUTPUT_DIR}/results.json"
-
-cp -r ${INPUT_DIR}/. ${WORKING_DIR}
 
 touch "${results_file}"
 
