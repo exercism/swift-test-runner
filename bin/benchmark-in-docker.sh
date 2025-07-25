@@ -34,7 +34,6 @@ fi
 
 CURRENT_PATH=${PWD}
 
-sudo hyperfine \
-    --prepare "git clean -fdqx tests/{slug}" \
+hyperfine --show-output \
     --parameter-list slug $(find tests -maxdepth 1 -mindepth 1 -type d -printf '%f\n' | paste -sd ",") \
     "SKIP_DOCKER_BUILD=true bin/run-in-docker.sh {slug} $CURRENT_PATH/tests/{slug} $CURRENT_PATH/tests/{slug}"
