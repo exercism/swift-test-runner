@@ -34,6 +34,6 @@ fi
 
 CURRENT_PATH=${PWD}
 
-hyperfine --show-output \
+hyperfine \
     --parameter-list slug $(find tests -maxdepth 1 -mindepth 1 -type d -printf '%f\n' | paste -sd ",") \
     "SKIP_DOCKER_BUILD=true bin/run-in-docker.sh {slug} $CURRENT_PATH/tests/{slug} $CURRENT_PATH/tests/{slug}"
