@@ -37,6 +37,9 @@ cp Package.resolved "${INPUT_DIR}/Package.resolved"
 touch "${results_file}"
 
 export RUNALL=true
-swift test --package-path "${INPUT_DIR}" --xunit-output "${INPUT_DIR}/results.xml" --skip-update  &> "${capture_file}"
+swift test \
+    --package-path "${INPUT_DIR}" \
+    --xunit-output "${INPUT_DIR}/results.xml" \
+    --skip-update &> "${capture_file}"
 
 ./bin/TestRunner "${spec_file}" "${junit_file}" "${capture_file}" "${results_file}" "${SLUG}"

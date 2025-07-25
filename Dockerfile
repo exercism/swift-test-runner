@@ -8,8 +8,9 @@ COPY src/TestRunner .
 RUN swift build --configuration release
 
 # Build WarmUp package
-# Build directory and working paths should be equal for reuse of ModuleCache.
-WORKDIR /opt/test-runner/
+# Build directory and final working paths should be equal for reuse of ModuleCache.
+# /solution is mounting point where exercise package is added.
+WORKDIR /solution
 COPY src/WarmUp .
 RUN swift build --build-tests
 
@@ -20,9 +21,8 @@ RUN apt-get update && apt-get install -y jq
 WORKDIR /opt/test-runner/
 COPY bin/run.sh bin/run.sh
 COPY --from=builder /TestRunner/.build/release/TestRunner bin/
-COPY --from=builder /opt/test-runner/.build .build
-COPY --from=builder /opt/test-runner/Package.resolved Package.resolved
-COPY --from=builder /opt/test-runner/.modulecache .modulecache/
+COPY --from=builder /solution/.build .build
+COPY --from=builder /solution/Package.resolved Package.resolved
 
 ENV RUNALL=
 
