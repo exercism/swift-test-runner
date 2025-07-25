@@ -7,12 +7,11 @@ WORKDIR /TestRunner
 COPY src/TestRunner .
 RUN swift build --configuration release
 
-# Build ModuleCache from WarpUm package
-WORKDIR /WarmUp
+# Build WarmUp package
+# Build directory and working paths should be equal for reuse of ModuleCache.
+WORKDIR /opt/test-runner/
 COPY src/WarmUp .
-RUN swift build \
-    --build-tests \
-    -Xswiftc -module-cache-path -Xswiftc /opt/test-runner/.modulecache
+RUN swift build --build-tests
 
 # Stage 2: Prepare docker container image
 FROM swift:6.1.2
@@ -21,10 +20,10 @@ RUN apt-get update && apt-get install -y jq
 WORKDIR /opt/test-runner/
 COPY bin/run.sh bin/run.sh
 COPY --from=builder /TestRunner/.build/release/TestRunner bin/
-COPY --from=builder /WarmUp/.build .build
-COPY --from=builder /WarmUp/Package.resolved Package.resolved
+COPY --from=builder /opt/test-runner/.build .build
+COPY --from=builder /opt/test-runner/Package.resolved Package.resolved
 COPY --from=builder /opt/test-runner/.modulecache .modulecache/
 
-ENV NAME RUNALL
+ENV RUNALL=
 
 ENTRYPOINT ["./bin/run.sh"]
