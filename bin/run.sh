@@ -22,23 +22,20 @@ if [ -z "$1" ] || [ -z "$2" ] || [ -z "$3" ]; then
 fi
 
 SLUG="$1"
+WORKING_DIR=${PWD}
 INPUT_DIR="${2%/}"
 OUTPUT_DIR="${3%/}"
-junit_file="${INPUT_DIR}/results-swift-testing.xml"
+junit_file="${WORKING_DIR}/results-swift-testing.xml"
+spec_file="${WORKING_DIR}/$(jq -r '.files.test[0]' ${WORKING_DIR}/.meta/config.json)"
 capture_file="${OUTPUT_DIR}/capture"
-spec_file="${INPUT_DIR}/$(jq -r '.files.test[0]' ${INPUT_DIR}/.meta/config.json)"
 results_file="${OUTPUT_DIR}/results.json"
-BASEDIR=$(dirname "$0")
 
-mkdir "${INPUT_DIR}" -p
-cp -r .build "${INPUT_DIR}/"
-cp Package.resolved "${INPUT_DIR}/Package.resolved"
+cp -r ${INPUT_DIR}/. ${WORKING_DIR}
 
 touch "${results_file}"
 
 export RUNALL=true
 swift test \
-    --package-path "${INPUT_DIR}" \
     --xunit-output "${INPUT_DIR}/results.xml" \
     --skip-update &> "${capture_file}"
 
