@@ -22,11 +22,15 @@ if [ -z "$1" ] || [ -z "$2" ] || [ -z "$3" ]; then
 fi
 
 SLUG="$1"
-WORKING_DIR=${PWD}
 INPUT_DIR="${2%/}"
 OUTPUT_DIR="${3%/}"
 
-cp -r ${INPUT_DIR}/. ${WORKING_DIR}
+if [[ "${RUN_IN_DOCKER}" == "TRUE" ]]; then  
+    WORKING_DIR=${PWD}
+    cp -r ${INPUT_DIR}/. ${WORKING_DIR}
+else
+    WORKING_DIR=${INPUT_DIR}
+fi
 
 junit_file="${WORKING_DIR}/results-swift-testing.xml"
 spec_file="${WORKING_DIR}/$(jq -r '.files.test[0]' ${WORKING_DIR}/.meta/config.json)"
@@ -37,7 +41,8 @@ touch "${results_file}"
 
 export RUNALL=true
 swift test \
-    --xunit-output "${INPUT_DIR}/results.xml" \
+    --package-path "${WORKING_DIR}" \
+    --xunit-output "${WORKING_DIR}/results.xml" \
     --skip-update &> "${capture_file}"
 
 ./bin/TestRunner "${spec_file}" "${junit_file}" "${capture_file}" "${results_file}" "${SLUG}"

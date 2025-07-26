@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
-set -e
 
 # Synopsis:
-# Test the test runner Docker image by running it against a predefined set of 
+# Test the test runner docker image by running it against a predefined set of 
 # solutions with an expected output.
 # The test runner Docker image is built automatically.
 
@@ -14,14 +13,28 @@ set -e
 # ./bin/run-tests-in-docker.sh
 
 # Build the Docker image
-docker build --rm -t exercism/swift-test-runner .
+# docker build --rm -t exercism/swift-test-runner .
 
-# Run the Docker image using the settings mimicking the production environment
-# TODO: support --read-only flag
-docker run \
-    --network none \
-    --mount type=bind,src="${PWD}/tests",dst=/opt/test-runner/tests \
-    --mount type=volume,dst=/tmp \
-    --workdir /opt/test-runner \
-    --entrypoint /opt/test-runner/bin/run-tests.sh \
-    exercism/swift-test-runner
+exit_code=0
+
+# Iterate over all test directories
+work_dir=/opt/test-runner/
+for test_dir in tests/*; do
+    test_name=$(basename $test_dir)
+    dst_test_dir=${work_dir}/${test_name}
+    docker run \
+        --network none \
+        --mount type=bind,src=${PWD}/${test_dir},dst=${dst_test_dir} \
+        --mount type=volume,dst=/tmp \
+        --workdir "${work_dir}" \
+        --entrypoint ${work_dir}/bin/run-test.sh \
+        -e RUN_IN_DOCKER=TRUE \
+        exercism/swift-test-runner \
+        "${dst_test_dir}"
+
+    if [ $? -ne 0 ]; then
+        exit_code=1
+    fi
+done
+
+exit ${exit_code}
