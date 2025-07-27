@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Synopsis:
-# Test the test runner docker image by running it against a predefined set of 
+# Test the test runner Docker image by running it against a predefined set of 
 # solutions with an expected output.
 # The test runner Docker image is built automatically.
 
@@ -13,7 +13,7 @@
 # ./bin/run-tests-in-docker.sh
 
 # Build the Docker image
-# docker build --rm -t exercism/swift-test-runner .
+docker build --rm -t exercism/swift-test-runner .
 
 exit_code=0
 
