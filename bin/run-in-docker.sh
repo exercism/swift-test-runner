@@ -30,14 +30,18 @@ OUTPUT_DIR="${3%/}"
 # Create the output directory if it doesn't exist
 mkdir -p "${OUTPUT_DIR}"
 
-# build docker image
-docker build --rm -t exercism/swift-test-runner .
+# Pre-build the Docker image
+if [[ -z "${SKIP_DOCKER_BUILD}" ]]; then  
+  docker build --rm -t exercism/swift-test-runner .
+else
+  echo "Skipping docker build because SKIP_DOCKER_BUILD is set."
+fi
 
-# run image passing the arguments
-# TODO: support --read-only flag
+# Run image passing the arguments
 docker run \
     --network none \
     --mount type=bind,src="${INPUT_DIR}",dst=/solution \
     --mount type=bind,src="${OUTPUT_DIR}",dst=/output \
     --mount type=volume,dst=/tmp \
+    -e RUN_IN_DOCKER=TRUE \
     exercism/swift-test-runner $SLUG /solution/ /output/

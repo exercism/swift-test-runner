@@ -24,19 +24,25 @@ fi
 SLUG="$1"
 INPUT_DIR="${2%/}"
 OUTPUT_DIR="${3%/}"
-junit_file="${INPUT_DIR}/results-swift-testing.xml"
-capture_file="${OUTPUT_DIR}/capture"
-spec_file="${INPUT_DIR}/$(jq -r '.files.test[0]' ${INPUT_DIR}/.meta/config.json)"
-results_file="${OUTPUT_DIR}/results.json"
-BASEDIR=$(dirname "$0")
 
-mkdir "${INPUT_DIR}" -p
-cp -r .build "${INPUT_DIR}/"
-cp Package.resolved "${INPUT_DIR}/Package.resolved"
+if [[ "${RUN_IN_DOCKER}" == "TRUE" ]]; then  
+    WORKING_DIR=${PWD}
+    cp -r ${INPUT_DIR}/. ${WORKING_DIR}
+else
+    WORKING_DIR=${INPUT_DIR}
+fi
+
+junit_file="${WORKING_DIR}/results-swift-testing.xml"
+spec_file="${WORKING_DIR}/$(jq -r '.files.test[0]' ${WORKING_DIR}/.meta/config.json)"
+capture_file="${OUTPUT_DIR}/capture"
+results_file="${OUTPUT_DIR}/results.json"
 
 touch "${results_file}"
 
 export RUNALL=true
-swift test --package-path "${INPUT_DIR}" --xunit-output "${INPUT_DIR}/results.xml" --skip-update  &> "${capture_file}"
+swift test \
+    --package-path "${WORKING_DIR}" \
+    --xunit-output "${WORKING_DIR}/results.xml" \
+    --skip-update &> "${capture_file}"
 
 ./bin/TestRunner "${spec_file}" "${junit_file}" "${capture_file}" "${results_file}" "${SLUG}"

@@ -10,7 +10,7 @@
 # ./bin/build-test-runner.sh
 
 BIN_DIR="bin"
-BUILD_DIR="src/testrunner"
+BUILD_DIR="src/TestRunner"
 RELEASE_DIR=".build/release"
 
 # Build the test runner file
