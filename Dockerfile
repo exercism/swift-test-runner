@@ -18,12 +18,9 @@ FROM swift:6.1.2
 RUN apt-get update && apt-get install -y jq
 
 WORKDIR /opt/test-runner/
-COPY bin/run.sh bin/run.sh
-COPY bin/run-test.sh bin/run-test.sh
+COPY bin/run.sh bin/run-test.sh bin/
 COPY --from=builder /TestRunner/.build/release/TestRunner bin/
 COPY --from=builder /opt/test-runner/.build .build
 COPY --from=builder /opt/test-runner/Package.resolved Package.resolved
-
-ENV RUNALL=
 
 ENTRYPOINT ["./bin/run.sh"]
