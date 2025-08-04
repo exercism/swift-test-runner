@@ -25,12 +25,8 @@ SLUG="$1"
 INPUT_DIR="${2%/}"
 OUTPUT_DIR="${3%/}"
 
-if [[ "${RUN_IN_DOCKER}" == "TRUE" ]]; then  
-    WORKING_DIR=${PWD}
-    cp -r ${INPUT_DIR}/. ${WORKING_DIR}
-else
-    WORKING_DIR=${INPUT_DIR}
-fi
+WORKING_DIR=${PWD}
+cp -r ${INPUT_DIR}/. ${WORKING_DIR}
 
 junit_file="${WORKING_DIR}/results-swift-testing.xml"
 spec_file="${WORKING_DIR}/$(jq -r '.files.test[0]' ${WORKING_DIR}/.meta/config.json)"
