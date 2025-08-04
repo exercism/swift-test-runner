@@ -1,3 +1,8 @@
+# 2.0.3
+
+- Add WarmUp package to improve exercise build time.
+- Exercise package now is copied into docker image.
+
 # 2.0.2
 
 - Fix only one test case being executed.
