@@ -26,7 +26,7 @@ INPUT_DIR="${2%/}"
 OUTPUT_DIR="${3%/}"
 
 WORKING_DIR=${PWD}
-cp -r ${INPUT_DIR}/. ${WORKING_DIR}
+cp -r "${INPUT_DIR}/." "${WORKING_DIR}"
 
 junit_file="${WORKING_DIR}/results-swift-testing.xml"
 spec_file="${WORKING_DIR}/$(jq -r '.files.test[0]' ${WORKING_DIR}/.meta/config.json)"
