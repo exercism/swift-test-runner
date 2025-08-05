@@ -23,4 +23,6 @@ COPY --from=builder /TestRunner/.build/release/TestRunner bin/
 COPY --from=builder /opt/test-runner/.build .build
 COPY --from=builder /opt/test-runner/Package.resolved Package.resolved
 
+ENV RUN_IN_DOCKER=TRUE
+
 ENTRYPOINT ["./bin/run.sh"]

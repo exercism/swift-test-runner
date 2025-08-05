@@ -28,7 +28,6 @@ for test_dir in tests/*; do
         --mount type=volume,dst=/tmp \
         --workdir "${work_dir}" \
         --entrypoint ${work_dir}/bin/run-test.sh \
-        -e RUN_IN_DOCKER=TRUE \
         exercism/swift-test-runner \
         "${dst_test_dir}"
 

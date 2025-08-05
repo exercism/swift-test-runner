@@ -43,5 +43,4 @@ docker run \
     --mount type=bind,src="${INPUT_DIR}",dst=/solution \
     --mount type=bind,src="${OUTPUT_DIR}",dst=/output \
     --mount type=volume,dst=/tmp \
-    -e RUN_IN_DOCKER=TRUE \
     exercism/swift-test-runner $SLUG /solution/ /output/
