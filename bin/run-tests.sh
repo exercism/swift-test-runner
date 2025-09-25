@@ -20,7 +20,7 @@
 exit_code=0
 
 for test_dir in ./tests/*; do
-    [ -e "${test_dir}" ] || continue
+    [[ -e "${test_dir}" ]] || continue
 
     if bin/run-test.sh "${test_dir}"; then
         exit_code=1

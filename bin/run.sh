@@ -19,7 +19,7 @@ set -eu
 
 # If any required arguments is missing, print the usage and exit
 if (( "$#" != 3 )); then
-    printf 'usage: %s exercise-slug /absolute/path/to/solution/ /absolute/path/to/output/\n' "$0"
+    printf 'Usage: %s exercise-slug /absolute/path/to/solution/ /absolute/path/to/output/\n' "$0"
     exit 1
 fi
 

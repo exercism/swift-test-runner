@@ -18,15 +18,15 @@ set -euo pipefail
 
 # If any required arguments is missing, print the usage and exit
 if (( "$#" != 1 )); then
-    printf 'usage: %s /absolute/path/to/test/folder/\n' "$0"
+    printf 'Usage: %s /absolute/path/to/test/folder/\n' "$0"
     exit 1
 fi
 
 sed_i() { 
     if [[ "$(uname)" == "Darwin" ]]; then 
-        sed -i '' "$@"; 
+        sed -i '' "$@"
     else 
-        sed -i "$@"; 
+        sed -i "$@"
     fi 
 }
 

@@ -20,7 +20,7 @@ exit_code=0
 # Iterate over all test directories
 work_dir=/opt/test-runner/
 for test_dir in tests/*; do
-    test_name=$(basename "${test_dir}")
+    test_name="${test_dir#*/}"
     dst_test_dir=${work_dir}/${test_name}
     docker run \
         --network none \
