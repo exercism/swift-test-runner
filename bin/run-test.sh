@@ -42,5 +42,5 @@ bin/run.sh "${test_dir_name}" "${test_dir_path}" "${test_dir_path}"
 # Normalize the results file
 sed_i -e "s~\\\/~/~g" -e "s~${test_dir_path}~/solution~g" "${results_file_path}"
 
-printf '%s: comparing results.json to expected_results.json' "${test_dir_name}"
+printf '%s: comparing results.json to expected_results.json\n' "${test_dir_name}"
 diff "${results_file_path}" "${expected_results_file_path}"
