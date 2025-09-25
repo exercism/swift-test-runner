@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-set -e
 
 # Synopsis:
 # Run the test runner on a solution using the test runner Docker image.
@@ -18,8 +17,11 @@ set -e
 # ./bin/run-in-docker.sh two-fer /absolute/path/to/two-fer/solution/folder/ /absolute/path/to/output/directory/
 
 # If any required arguments is missing, print the usage and exit
-if [ -z "$1" ] || [ -z "$2" ] || [ -z "$3" ]; then
-    echo "usage: ./bin/run-in-docker.sh exercise-slug /absolute/path/to/solution/folder/ /absolute/path/to/output/directory/"
+
+set -euo pipefail
+
+if (( "$#" != 3 )); then
+    printf 'usage: %s exercise-slug /absolute/path/to/solution/folder/ /absolute/path/to/output/directory/\n' "$0"
     exit 1
 fi
 
@@ -31,10 +33,10 @@ OUTPUT_DIR="${3%/}"
 mkdir -p "${OUTPUT_DIR}"
 
 # Pre-build the Docker image
-if [[ -z "${SKIP_DOCKER_BUILD}" ]]; then  
+if [[ -z "${SKIP_DOCKER_BUILD:-}" ]]; then  
   docker build --rm -t exercism/swift-test-runner .
 else
-  echo "Skipping docker build because SKIP_DOCKER_BUILD is set."
+  printf "Skipping docker build because SKIP_DOCKER_BUILD is set.\n"
 fi
 
 # Run image passing the arguments
@@ -43,4 +45,4 @@ docker run \
     --mount type=bind,src="${INPUT_DIR}",dst=/solution \
     --mount type=bind,src="${OUTPUT_DIR}",dst=/output \
     --mount type=volume,dst=/tmp \
-    exercism/swift-test-runner $SLUG /solution/ /output/
+    exercism/swift-test-runner "${SLUG}" /solution/ /output/

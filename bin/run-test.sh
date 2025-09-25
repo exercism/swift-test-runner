@@ -14,13 +14,21 @@
 # Example:
 # ./bin/run-test.sh /absolute/path/to/tests/compile-error/
 
-set -eu
+set -euo pipefail
 
 # If any required arguments is missing, print the usage and exit
-if [ -z "$1" ]; then
-    echo "usage: ./bin/run-test.sh /absolute/path/to/test/folder/"
+if (( "$#" != 1 )); then
+    printf 'usage: %s /absolute/path/to/test/folder/\n' "$0"
     exit 1
 fi
+
+sed_i() { 
+    if [[ "$(uname)" == "Darwin" ]]; then 
+        sed -i '' "$@"; 
+    else 
+        sed -i "$@"; 
+    fi 
+}
 
 test_dir="$1"
 
@@ -32,7 +40,7 @@ expected_results_file_path="${test_dir_path}/expected_results.json"
 bin/run.sh "${test_dir_name}" "${test_dir_path}" "${test_dir_path}"
 
 # Normalize the results file
-sed -i -e "s~\\\/~/~g" -e "s~${test_dir_path}~/solution~g" "${results_file_path}"
+sed_i -e "s~\\\/~/~g" -e "s~${test_dir_path}~/solution~g" "${results_file_path}"
 
-echo "${test_dir_name}: comparing results.json to expected_results.json"
+printf '%s: comparing results.json to expected_results.json' "${test_dir_name}"
 diff "${results_file_path}" "${expected_results_file_path}"

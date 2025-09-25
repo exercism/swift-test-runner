@@ -19,12 +19,12 @@
 
 exit_code=0
 
-for test_dir in tests/*; do
-    bin/run-test.sh $test_dir
+for test_dir in ./tests/*; do
+    [ -e "${test_dir}" ] || continue
 
-    if [ $? -ne 0 ]; then
+    if bin/run-test.sh "${test_dir}"; then
         exit_code=1
     fi
 done
 
-exit ${exit_code}
+exit "${exit_code}"

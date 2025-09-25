@@ -9,14 +9,16 @@
 # Example:
 # ./bin/build-test-runner.sh
 
+set -euo pipefail
+
 BIN_DIR="bin"
 BUILD_DIR="src/TestRunner"
 RELEASE_DIR=".build/release"
 
 # Build the test runner file
-cd "$BUILD_DIR"
+cd "${BUILD_DIR}"
 swift build --configuration release
 cd -
 
 # Copy generated file to bin dir
-cp "$BUILD_DIR/$RELEASE_DIR/TestRunner" "$BIN_DIR"/
+cp "${BUILD_DIR}/${RELEASE_DIR}/TestRunner" "${BIN_DIR}"/

@@ -19,7 +19,7 @@ set -eu
 
 # If any required arguments is missing, print the usage and exit
 if (( "$#" != 3 )); then
-    echo "usage: ./bin/run.sh exercise-slug /absolute/path/to/two-fer/solution/folder/ /absolute/path/to/output/directory/"
+    printf 'usage: %s exercise-slug /absolute/path/to/solution/ /absolute/path/to/output/\n' "$0"
     exit 1
 fi
 
@@ -36,7 +36,7 @@ get_target_name() {
     echo "${path}"
 }
 
-if [[ "${RUN_IN_DOCKER}" == "TRUE" ]]; then
+if [[ "${RUN_IN_DOCKER:-}" == "TRUE" ]]; then
     # Docker image contains a prebuilt package called TestEnvironment with a ready .build directory 
     # to build solutions as fast as it possible. To minimize changes in the build graph,
     # exercise resources are copied inside the TestEnvironment package as if they had always been there.
@@ -47,29 +47,27 @@ if [[ "${RUN_IN_DOCKER}" == "TRUE" ]]; then
     TEST_TARGET_PATH="${WORKING_DIR}/Tests/TestEnvironmentTests"
 
     # 1. Replace source files with those of an exercise, saving TestEnvironement paths
-    rm -r "${SOURCE_TARGET_PATH}" "${TEST_TARGET_PATH}"
+    rm -r -- "${SOURCE_TARGET_PATH}" "${TEST_TARGET_PATH}"
 
     target_name=$(get_target_name solution)
     test_target_name=$(get_target_name test)
 
     # Copying everything from package in case of other targets.
-    cp -r "${INPUT_DIR}/Sources/." "${WORKING_DIR}/Sources"
-    cp -r "${INPUT_DIR}/Tests/." "${WORKING_DIR}/Tests"
+    cp -r -- "${INPUT_DIR}/Sources/." "${WORKING_DIR}/Sources"
+    cp -r -- "${INPUT_DIR}/Tests/." "${WORKING_DIR}/Tests"
 
-    mv "${WORKING_DIR}/Sources/${target_name}" "${SOURCE_TARGET_PATH}"
-    mv "${WORKING_DIR}/Tests/${test_target_name}" "${TEST_TARGET_PATH}"
+    mv -- "${WORKING_DIR}/Sources/${target_name}" "${SOURCE_TARGET_PATH}"
+    mv -- "${WORKING_DIR}/Tests/${test_target_name}" "${TEST_TARGET_PATH}"
 
     # 2. Replace @testable import SomeModule with @testable import TestEnvironment
-    change_import='s/@testable import [^ ]\+/@testable import TestEnvironment/g'
-    for file in "${WORKING_DIR}/Tests/TestEnvironmentTests"/*.swift; do
-        sed -i "${change_import}" "${file}"
-    done
+    change_import="s/@testable import [^ ]\+/@testable import TestEnvironment/g"
+    sed -i -- "${change_import}" "${WORKING_DIR}/Tests/TestEnvironmentTests"/*.swift
 
     # 3. Copy Package.swift and rename main & test targets.
     cp "${INPUT_DIR}/Package.swift" "${WORKING_DIR}"
-    change_target="s/\"${target_name}\"/\"TestEnvironment\"/g; "
+    change_target="s/\"${target_name}\"/\"TestEnvironment\"/g;"
     change_target+="s/\"${test_target_name}\"/\"TestEnvironmentTests\"/g"
-    sed -i "${change_target}" "${WORKING_DIR}/Package.swift"
+    sed -i -- "${change_target}" "${WORKING_DIR}/Package.swift"
 
 else
     WORKING_DIR=${INPUT_DIR}
@@ -84,9 +82,11 @@ touch "${results_file}"
 
 export RUNALL=true
 
+# Builds and runs tests. The resulting artifacts are saved to $junit_file (yes, the file name will change).
 swift test \
     --package-path "${WORKING_DIR}" \
     --xunit-output "${WORKING_DIR}/results.xml" \
     --skip-update &> "${capture_file}" || true
 
+# Convert test results into the Exercism test runner output format.
 ./bin/TestRunner "${spec_file}" "${junit_file}" "${capture_file}" "${results_file}" "${SLUG}"

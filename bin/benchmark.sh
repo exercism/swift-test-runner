@@ -10,7 +10,7 @@
 # Example:
 # ./bin/benchmark.sh
 
-set -eo pipefail
+set -euo pipefail
 
 die() { echo "$*" >&2; exit 1; }
 
@@ -21,7 +21,8 @@ required_tool() {
 
 required_tool hyperfine
 
+test_list=$(find tests -maxdepth 1 -mindepth 1 -type d -exec basename {} \; | paste -sd "," -)
 hyperfine \
-    --parameter-list slug $(find tests -maxdepth 1 -mindepth 1 -type d -printf '%f\n' | paste -sd ",") \
+    --parameter-list slug "${test_list}" \
     --prepare 'git clean -xdfq tests/{slug}' \
-    'bin/run.sh {slug} tests/{slug} tests/{slug}'
+    './bin/run.sh {slug} tests/{slug} tests/{slug}'
