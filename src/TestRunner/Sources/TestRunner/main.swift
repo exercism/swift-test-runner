@@ -1,5 +1,7 @@
 import Foundation
+#if os(Linux)
 import FoundationXML
+#endif
 import SwiftParser
 import SwiftSyntax
 
