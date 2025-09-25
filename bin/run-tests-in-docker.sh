@@ -31,7 +31,7 @@ for test_dir in tests/*; do
         exercism/swift-test-runner \
         "${dst_test_dir}"
 
-    if [ $? -ne 0 ]; then
+    if (( "$?" != 0 )); then
         printf 'Test "%s" failed!\n' "${test_name}" 
         exit_code=1
     fi
