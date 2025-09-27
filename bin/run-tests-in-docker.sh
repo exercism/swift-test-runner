@@ -20,7 +20,7 @@ exit_code=0
 # Iterate over all test directories
 work_dir=/opt/test-runner/
 for test_dir in tests/*; do
-    test_name=$(basename $test_dir)
+    test_name="${test_dir#*/}"
     dst_test_dir=${work_dir}/${test_name}
     docker run \
         --network none \
@@ -31,9 +31,10 @@ for test_dir in tests/*; do
         exercism/swift-test-runner \
         "${dst_test_dir}"
 
-    if [ $? -ne 0 ]; then
+    if (( "$?" != 0 )); then
+        printf 'Test "%s" failed!\n' "${test_name}" 
         exit_code=1
     fi
 done
 
-exit ${exit_code}
+exit "${exit_code}"

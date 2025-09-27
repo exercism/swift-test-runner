@@ -1,5 +1,7 @@
 import Foundation
+#if os(Linux)
 import FoundationXML
+#endif
 
 class MyXMLParserDelegate: NSObject, XMLParserDelegate {
   var counter = 0
