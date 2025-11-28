@@ -2,7 +2,7 @@
   "status" : "fail",
   "tests" : [
     {
-      "message" : "Expectation failed: (sum(2, 3) → -1) == 5: 2+3 should equal 5",
+      "message" : "Expectation failed: (sum(2, 3) → -1) == 5 (error): 2+3 should equal 5",
       "name" : "test Add",
       "status" : "fail",
       "test_code" : "#expect(sum(2, 3) == 5, \"2+3 should equal 5\")"
