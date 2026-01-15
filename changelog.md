@@ -1,3 +1,7 @@
+# 2.0.5
+
+- Base image for docker is now exercism/swift-docker-base.
+
 # 2.0.4
 
 - The WarmUp package has been renamed to TestEnvironment and is now used directly to build exercise solutions.

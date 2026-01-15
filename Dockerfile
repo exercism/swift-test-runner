@@ -1,5 +1,8 @@
+ARG REPO=exercism/swift-docker-base
+ARG IMAGE=latest
+
 # Stage 1: Precompile TestRunner
-FROM swift:6.1.2 AS builder
+FROM ${REPO}:${IMAGE} AS builder
 RUN swift --version
 
 # Build TestRunner executable
@@ -8,7 +11,7 @@ COPY src/TestRunner .
 RUN swift build --configuration release
 
 # Stage 2: Prepare docker container image
-FROM swift:6.1.2
+FROM ${REPO}:${IMAGE} AS base
 RUN apt-get update && apt-get install -y jq
 
 WORKDIR /opt/test-runner
