@@ -86,6 +86,7 @@ export RUNALL=true
 swift test \
     --package-path "${WORKING_DIR}" \
     --xunit-output "${WORKING_DIR}/results.xml" \
+    --build-system native \
     --skip-update &> "${capture_file}" || true
 
 # Convert test results into the Exercism test runner output format.
