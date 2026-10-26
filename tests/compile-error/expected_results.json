@@ -1,5 +1,5 @@
 {
-  "message" : "/opt/test-runner/Sources/TestEnvironment/CompileError.swift:2:12: error: unexpected non-void return value in void function1 | func sum(_ x: Int, _ y: Int) {2 |   return x + y  |            |- error: unexpected non-void return value in void function  |            `- note: did you mean to add a return type?3 | }4 | error: fatalError",
+  "message" : "/opt/test-runner/Sources/TestEnvironment/CompileError.swift:2:12: error: unexpected non-void return value in void function1 | func sum(_ x: Int, _ y: Int) {2 |   return x + y  |            |- error: unexpected non-void return value in void function  |            `- note: did you mean to add a return type?3 | }4 | warning: '--build-system native' has been deprecated and will be removed in a future release; please report an issue at https://github.com/swiftlang/swift-package-manager/issues if you are unable to adopt the default build system.error: fatalError",
   "status" : "error",
   "tests" : [
 

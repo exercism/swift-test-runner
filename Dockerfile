@@ -8,7 +8,7 @@ RUN swift --version
 # Build TestRunner executable
 WORKDIR /TestRunner
 COPY src/TestRunner .
-RUN swift build --configuration release
+RUN swift build --configuration release --build-system native
 
 # Stage 2: Prepare docker container image
 FROM ${REPO}:${IMAGE} AS base
@@ -19,7 +19,7 @@ WORKDIR /opt/test-runner
 # Build TestEnvironment package
 # Build directory and final working paths should be equal for reuse of ModuleCache.
 COPY src/TestEnvironment .
-RUN swift build --build-tests
+RUN swift build --build-tests --build-system native
 
 COPY bin/run.sh bin/run-test.sh bin/
 COPY --from=builder /TestRunner/.build/release/TestRunner bin/
