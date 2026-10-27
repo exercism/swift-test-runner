@@ -49,8 +49,8 @@ class TestRunner {
 
     let url = URL(fileURLWithPath: file)
     let swiftSource = try! String(contentsOf: url)
-    let sourceFile = try Parser.parse(source: swiftSource)
-    var process = SyntaxParser(viewMode: SyntaxTreeViewMode.all)
+    let sourceFile = Parser.parse(source: swiftSource)
+    let process = SyntaxParser(viewMode: SyntaxTreeViewMode.all)
     process.walk(sourceFile)
     let testCases = process.testCases
 
@@ -69,7 +69,7 @@ class TestRunner {
     let xmlParser = XMLParser(data: xmlData)
     let delegate = MyXMLParserDelegate(tests: testCases)
     xmlParser.delegate = delegate
-    xmlParser.parse()
+    _ = xmlParser.parse()
     if !delegate.hasTest {
       let errorContext = loadErrorContext()
       print(errorContext)
@@ -100,7 +100,7 @@ class TestRunner {
     encoder.outputFormatting.update(with: .prettyPrinted)
     encoder.outputFormatting.update(with: .sortedKeys)
     var json: testFile
-    if xmlTests.contains { $0.status == "fail" } {
+    if xmlTests.contains(where: { $0.status == "fail" }) {
       json = testFile(status: "fail", tests: xmlTests)
     } else if error != "" {
       json = testFile(status: "error", message: error)

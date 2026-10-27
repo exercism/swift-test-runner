@@ -38,10 +38,8 @@ class SyntaxParser: SyntaxVisitor {
 
   func breakDown(_ node: LabeledExprListSyntax) -> String? {
     for child in node {
-      if let labeled = child as? LabeledExprSyntax {
-        return labeled.expression.description.trimmingCharacters(
-          in: CharacterSet(charactersIn: "\""))
-      }
+      return child.expression.description.trimmingCharacters(
+        in: CharacterSet(charactersIn: "\""))
     }
     return nil
   }
