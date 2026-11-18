@@ -21,7 +21,9 @@ WORKDIR /opt/test-runner
 COPY src/TestEnvironment .
 RUN swift build --build-tests --build-system native
 
-COPY bin/run.sh bin/run-test.sh bin/
+COPY bin/run.sh bin/run-test.sh bin/fast-test.sh bin/
+COPY src/FastTest src/FastTest
+RUN bin/fast-test.sh --prepare /opt/test-runner
 COPY --from=builder /TestRunner/.build/release/TestRunner bin/
 
 ENV RUN_IN_DOCKER=TRUE
