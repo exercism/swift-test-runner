@@ -13,7 +13,8 @@
 #
 # Usage:
 # bin/fast-test.sh --prepare <package-dir>
-#   Compiles the entry point. The Dockerfile runs this once.
+#   Compiles the entry point and fills the module cache. The Dockerfile runs
+#   this once.
 # bin/fast-test.sh <package-dir> <junit-file> <capture-file>
 #   Builds and runs the tests, writing Swift Testing's JUnit XML to <junit-file>
 #   and the test output to <capture-file>.
@@ -43,13 +44,14 @@ BUILD_DIR="${PACKAGE_DIR}/.build/x86_64-unknown-linux-gnu/debug"
 WORK_DIR="$(mktemp -d)"
 
 # These are the flags `swift build --build-system native` passes for a debug
-# build of a package with swift-tools-version 6.x. The flags that reach Clang
-# must stay the same, so that the compiler reuses the module cache built into
-# the image by `swift build`. Otherwise it will rebuild every Clang module,
-# which takes about 1.5 seconds.
+# build of a package with swift-tools-version 6.x, without -g. Leaving out
+# debug info saves about 0.35 seconds when compiling a large test file, and
+# Swift Testing's results don't use it. The module cache depends on these
+# flags, so --prepare fills it for them at image build. Otherwise every run
+# will rebuild the Clang modules, which takes about 1.5 seconds.
 common_flags=(
     -target x86_64-unknown-linux-gnu
-    -Onone -enable-testing -g
+    -Onone -enable-testing
     -DSWIFT_PACKAGE -DDEBUG -DSWIFT_MODULE_RESOURCE_BUNDLE_UNAVAILABLE
     -module-cache-path "${BUILD_DIR}/ModuleCache"
     -parse-as-library -swift-version 6
@@ -61,6 +63,10 @@ common_flags=(
 if [[ "${prepare}" == true ]]; then
     swiftc -module-name TestEnvironmentPackageTests "${common_flags[@]}" \
         -c "${ENTRY_POINT_SOURCE}" -o "${ENTRY_POINT_OBJECT}" || exit 1
+    printf 'import Foundation\nimport Testing\n' > "${WORK_DIR}/Warmup.swift"
+    swiftc -module-name TestEnvironmentTests "${common_flags[@]}" \
+        -Xfrontend -enable-cross-import-overlays \
+        -typecheck "${WORK_DIR}/Warmup.swift" || exit 1
     mkdir -p "${NUMERICS_MODULES_DIR}"
     ln -sf "${BUILD_DIR}/Modules/RealModule.swiftmodule" "${NUMERICS_MODULES_DIR}/"
     exit
@@ -97,7 +103,7 @@ swiftc -module-name TestEnvironmentTests "${common_flags[@]}" \
 
 # mold links the test binary in about 0.15 seconds, where GNU ld (the default)
 # takes 0.35 seconds.
-swiftc -target x86_64-unknown-linux-gnu -g -use-ld=mold -emit-executable \
+swiftc -target x86_64-unknown-linux-gnu -use-ld=mold -emit-executable \
     "${WORK_DIR}/TestEnvironment.o" "${WORK_DIR}/TestEnvironmentTests.o" "${ENTRY_POINT_OBJECT}" "${link_objects[@]}" \
     -o "${WORK_DIR}/TestEnvironmentPackageTests.xctest" &> /dev/null || exit 1
 
