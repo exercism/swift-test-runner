@@ -12,7 +12,9 @@ RUN swift build --configuration release --build-system native
 
 # Stage 2: Prepare docker container image
 FROM ${REPO}:${IMAGE} AS base
-RUN apt-get update && apt-get install -y jq
+# bin/fast-test.sh links with mold, which takes about 0.15 seconds for a test
+# binary where GNU ld takes 0.35 seconds.
+RUN apt-get update && apt-get install -y jq mold
 
 WORKDIR /opt/test-runner
 
