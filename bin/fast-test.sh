@@ -28,6 +28,9 @@ set -uo pipefail
 BIN_DIR="$(cd "$(dirname "$0")" && pwd)"
 ENTRY_POINT_SOURCE="${BIN_DIR}/../src/FastTest/Runner.swift"
 ENTRY_POINT_OBJECT="${BIN_DIR}/fast-test-main.o"
+# This folder holds only the RealModule module from swift-numerics, so that the
+# compiler can find it without seeing the other modules in .build.
+NUMERICS_MODULES_DIR="${BIN_DIR}/fast-test-modules"
 
 prepare=false
 if [[ "$1" == "--prepare" ]]; then
@@ -57,12 +60,27 @@ common_flags=(
 
 if [[ "${prepare}" == true ]]; then
     swiftc -module-name TestEnvironmentPackageTests "${common_flags[@]}" \
-        -c "${ENTRY_POINT_SOURCE}" -o "${ENTRY_POINT_OBJECT}"
+        -c "${ENTRY_POINT_SOURCE}" -o "${ENTRY_POINT_OBJECT}" || exit 1
+    mkdir -p "${NUMERICS_MODULES_DIR}"
+    ln -sf "${BUILD_DIR}/Modules/RealModule.swiftmodule" "${NUMERICS_MODULES_DIR}/"
     exit
 fi
 
 JUNIT_FILE="$2"
 CAPTURE_FILE="$3"
+
+# Some exercises use RealModule from swift-numerics, which the image built
+# with the TestEnvironment package.
+link_objects=()
+if grep -q 'swift-numerics' "${PACKAGE_DIR}/Package.swift"; then
+    numerics_include_dir="${PACKAGE_DIR}/.build/checkouts/swift-numerics/Sources/_NumericsShims/include"
+    common_flags+=(
+        -I "${NUMERICS_MODULES_DIR}"
+        -Xcc "-fmodule-map-file=${numerics_include_dir}/module.modulemap"
+        -Xcc -I -Xcc "${numerics_include_dir}"
+    )
+    link_objects+=("${BUILD_DIR}"/RealModule.build/*.o "${BUILD_DIR}"/_NumericsShims.build/*.o)
+fi
 
 mapfile -t source_files < <(find "${PACKAGE_DIR}/Sources/TestEnvironment" -name '*.swift' | sort)
 mapfile -t test_files < <(find "${PACKAGE_DIR}/Tests/TestEnvironmentTests" -name '*.swift' | sort)
@@ -80,7 +98,7 @@ swiftc -module-name TestEnvironmentTests "${common_flags[@]}" \
 # mold links the test binary in about 0.15 seconds, where GNU ld (the default)
 # takes 0.35 seconds.
 swiftc -target x86_64-unknown-linux-gnu -g -use-ld=mold -emit-executable \
-    "${WORK_DIR}/TestEnvironment.o" "${WORK_DIR}/TestEnvironmentTests.o" "${ENTRY_POINT_OBJECT}" \
+    "${WORK_DIR}/TestEnvironment.o" "${WORK_DIR}/TestEnvironmentTests.o" "${ENTRY_POINT_OBJECT}" "${link_objects[@]}" \
     -o "${WORK_DIR}/TestEnvironmentPackageTests.xctest" &> /dev/null || exit 1
 
 "${WORK_DIR}/TestEnvironmentPackageTests.xctest" \

@@ -36,9 +36,10 @@ get_target_name() {
     echo "${path}"
 }
 
-# Succeeds if the exercise's package has one target and one test target with
-# no dependencies, uses swift-tools-version 6.x, holds only Swift files, and
-# its tests don't import XCTest. bin/fast-test.sh only handles those packages.
+# Succeeds if the exercise's package has one target and one test target, with
+# no dependencies other than RealModule from swift-numerics, uses
+# swift-tools-version 6.x, holds only Swift files, and its tests don't import
+# XCTest. bin/fast-test.sh only handles those packages.
 uses_usual_package() {
     local target_name=$1
     local test_target_name=$2
@@ -47,9 +48,13 @@ uses_usual_package() {
 
     head -n 1 "${INPUT_DIR}/Package.swift" | grep -Eq '^// *swift-tools-version: *6\.[0-9]+(\.[0-9]+)? *$' || return 1
 
-    # Remove comments, whitespace and trailing commas, then replace the names.
-    manifest=$(sed -e 's#//.*##' "${INPUT_DIR}/Package.swift" | tr -d ' \t\r\n' |
-        sed -e 's/,\([])]\)/\1/g' \
+    # Remove comments (but not the "//" in "https://"), whitespace,
+    # swift-numerics and trailing commas, then replace the names.
+    manifest=$(sed -e 's#\(^\|[^:]\)//.*#\1#' "${INPUT_DIR}/Package.swift" | tr -d ' \t\r\n' |
+        sed -e 's#\.package(url:"https://github.com/apple/swift-numerics",from:"1\.0\.3")##' \
+            -e 's/\.product(name:"RealModule",package:"swift-numerics")//g' \
+            -e 's/\[,*/[/g' -e 's/,,*/,/g' -e 's/,\([])]\)/\1/g' \
+            -e 's/\.target(name:"\([^"]*\)")/.target(name:"\1",dependencies:[])/' \
             -e 's/Package(name:"[^"]*"/Package(name:"P"/' \
             -e 's/\.library(name:"[^"]*"/.library(name:"P"/' \
             -e "s/\"${target_name}\"/\"T\"/g" \
